@@ -1,12 +1,13 @@
 package io.github.zforgo.guides.aop;
 
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 
 import java.lang.reflect.Method;
 
-public class TestInterceptor implements InvocationInterceptor {
+public class TestInterceptor implements BeforeAllCallback, InvocationInterceptor {
     @Override
     public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
         System.out.printf("Calling: %s%n", invocationContext.getExecutable());
@@ -17,6 +18,11 @@ public class TestInterceptor implements InvocationInterceptor {
             System.err.printf("Got a(n) [%s] exception (%s) during a method call: %s%n", e.getClass(), e.getMessage(), invocationContext.getExecutable());
             throw e;
         }
+
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) throws Exception {
 
     }
 }
